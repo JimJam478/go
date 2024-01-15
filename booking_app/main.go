@@ -44,6 +44,13 @@ func main() {
 			firstNames = append(firstNames, names[0])
 
 		}
+
+		if remainingTickets == 0 {
+			fmt.Printf("Fully booked \n")
+			break
+
+		}
+
 		fmt.Printf("first name list: %v \n", firstNames)
 
 	}
