@@ -5,20 +5,27 @@ import (
 	"strings"
 )
 
-func main() {
+const conferenceTickets = 50
+
+var remainingTickets = 50
+
+func greetUsers() {
+
 	var conferenceName string = "Go Conference"
-	const conferenceTickets = 50
-	var remainingTickets = 50
-	var bookings []string
 
 	fmt.Println("Welcome to our", conferenceName, "booking application")
 	fmt.Println("Get your tickets here !")
 	fmt.Printf("Total tickets: %d \n Remaining Tickets: %d \n", conferenceTickets, remainingTickets)
 
+}
+
+func userDetails() {
+
 	var firstName string
 	var lastName string
 	var email string
 	var userTickets int
+	var bookings []string
 
 	for {
 
@@ -41,7 +48,6 @@ func main() {
 		if isValidEmail && isValidName && isValidUserTicket {
 			remainingTickets = remainingTickets - userTickets
 			bookings = append(bookings, firstName+" "+lastName)
-			fmt.Printf("array: %v \n", bookings)
 			fmt.Printf("%s %s (%s) booked %d tickets \n", firstName, lastName, email, userTickets)
 			fmt.Printf("Tickets remaining %d \n", remainingTickets)
 
@@ -70,4 +76,10 @@ func main() {
 		}
 
 	}
+}
+
+func main() {
+
+	greetUsers()
+	userDetails()
 }
