@@ -21,6 +21,7 @@ func main() {
 	var userTickets int
 
 	for {
+
 		fmt.Print("Enter first name: ")
 		fmt.Scan(&firstName)
 
@@ -33,26 +34,40 @@ func main() {
 		fmt.Print("Enter number of tickets: ")
 		fmt.Scan(&userTickets)
 
-		remainingTickets = remainingTickets - userTickets
-		bookings = append(bookings, firstName+" "+lastName)
-		fmt.Printf("array: %v \n", bookings)
-		fmt.Printf("%s %s (%s) booked %d tickets \n", firstName, lastName, email, userTickets)
+		isValidName := len(firstName) > 2 && len(lastName) > 2
+		isValidEmail := strings.Contains(email, "@")
+		isValidUserTicket := userTickets > 0 && userTickets <= remainingTickets
 
-		firstNames := []string{}
-		for _, booking := range bookings {
-			var names = strings.Fields(booking)
-			firstNames = append(firstNames, names[0])
+		if isValidEmail && isValidName && isValidUserTicket {
+			remainingTickets = remainingTickets - userTickets
+			bookings = append(bookings, firstName+" "+lastName)
+			fmt.Printf("array: %v \n", bookings)
+			fmt.Printf("%s %s (%s) booked %d tickets \n", firstName, lastName, email, userTickets)
+			fmt.Printf("Tickets remaining %d \n", remainingTickets)
 
+			firstNames := []string{}
+			for _, booking := range bookings {
+				var names = strings.Fields(booking)
+				firstNames = append(firstNames, names[0])
+
+			}
+		} else {
+			if !isValidName {
+				fmt.Println("First name or Last name is invalid")
+			}
+			if !isValidEmail {
+				fmt.Println("Please enter a valid email")
+
+			}
+			if !isValidUserTicket {
+				fmt.Println("Please enter a valid ticket number")
+			}
 		}
 
 		if remainingTickets == 0 {
 			fmt.Printf("Fully booked \n")
 			break
-
 		}
 
-		fmt.Printf("first name list: %v \n", firstNames)
-
 	}
-
 }
