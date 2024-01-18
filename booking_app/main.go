@@ -9,6 +9,15 @@ const conferenceTickets = 50
 
 var remainingTickets = 50
 
+var bookings = make([]UserDetails, 0)
+
+type UserDetails struct {
+	firstName       string
+	lastName        string
+	email           string
+	numberOfTickets int
+}
+
 func greetUsers() {
 
 	var conferenceName string = "Go Conference"
@@ -19,39 +28,52 @@ func greetUsers() {
 
 }
 
-func userDetails() {
+func getUserDetails() (string, string, string) {
 
 	var firstName string
 	var lastName string
 	var email string
+
+	fmt.Print("Enter first name: ")
+	fmt.Scan(&firstName)
+
+	fmt.Print("Enter last name: ")
+	fmt.Scan(&lastName)
+
+	fmt.Print("Enter email: ")
+	fmt.Scan(&email)
+
+	return firstName, lastName, email
+}
+
+func bookTickets() {
+
 	var userTickets int
-	var bookings []string
 
 	for {
-
-		fmt.Print("Enter first name: ")
-		fmt.Scan(&firstName)
-
-		fmt.Print("Enter last name: ")
-		fmt.Scan(&lastName)
-
-		fmt.Print("Enter email: ")
-		fmt.Scan(&email)
-
-		fmt.Print("Enter number of tickets: ")
+		firstName, lastName, email := getUserDetails()
+		fmt.Print("Enter number of tickets:")
 		fmt.Scan(&userTickets)
 
-		isValidEmail, isValidName, isValidUserTicket := userValidation(firstName, lastName, email, userTickets, remainingTickets)
+		var userData = UserDetails{
+			firstName:       firstName,
+			lastName:        lastName,
+			email:           email,
+			numberOfTickets: userTickets,
+		}
+
+		bookings = append(bookings, userData)
+
+		isValidName, isValidEmail, isValidUserTicket := userValidation(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidEmail && isValidName && isValidUserTicket {
 			remainingTickets = remainingTickets - userTickets
-			bookings = append(bookings, firstName+" "+lastName)
 			fmt.Printf("%s %s (%s) booked %d tickets \n", firstName, lastName, email, userTickets)
 			fmt.Printf("Tickets remaining %d \n", remainingTickets)
 
 			firstNames := []string{}
 			for _, booking := range bookings {
-				var names = strings.Fields(booking)
+				var names = strings.Fields(booking.firstName)
 				firstNames = append(firstNames, names[0])
 
 			}
@@ -76,15 +98,8 @@ func userDetails() {
 	}
 }
 
-func userValidation(firstName string, lastName string, email string, userTickets int, remainingTickets int) (bool, bool, bool) {
-	isValidName := len(firstName) > 2 && len(lastName) > 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidUserTicket := userTickets > 0 && userTickets <= remainingTickets
-	return isValidEmail, isValidName, isValidUserTicket
-}
-
 func main() {
 	greetUsers()
-	userDetails()
+	bookTickets()
 
 }
